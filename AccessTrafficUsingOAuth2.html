@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
 <html>
+
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
@@ -8,7 +9,8 @@
   <script src="https://js.arcgis.com/4.13/"></script>
   <style>
     html,
-    body, #viewDiv{
+    body,
+    #viewDiv {
       font-family: Avenir Next W00;
       font-size: 14px;
       width: 100%;
@@ -35,9 +37,9 @@
       "dojo/dom-attr",
       "dojo/on",
       "dojo/dom"
-    ], function(
-        Portal, OAuthInfo, identityManager, Map, MapView, MapImageLayer,
-        domStyle, domAttr, on, dom) {
+    ], function (
+      Portal, OAuthInfo, identityManager, Map, MapView, MapImageLayer,
+      domStyle, domAttr, on, dom) {
 
       // ArcGIS Online or your portal address
       var portalUrl = "https://www.arcgis.com/sharing";
@@ -52,52 +54,53 @@
       identityManager.registerOAuthInfos([info]);
 
       // send users to arcgis.com to login
-      on(dom.byId("sign-in"), "click", function() {
+      on(dom.byId("sign-in"), "click", function () {
         identityManager.getCredential(portalUrl);
       });
 
       // log out and reload
-      on(dom.byId("sign-out"), "click", function() {
+      on(dom.byId("sign-out"), "click", function () {
         identityManager.destroyCredentials();
         window.location.reload();
       });
 
-      identityManager.checkSignInStatus(portalUrl).then(function() {
-       dom.byId('anonymousPanel').style.display = 'none';
-       dom.byId('personalizedPanel').style.display = 'block'
-       //*** ADD ***//
-       displayMap();
-     });
+      identityManager.checkSignInStatus(portalUrl).then(function () {
+        dom.byId('anonymousPanel').style.display = 'none';
+        dom.byId('personalizedPanel').style.display = 'block'
+        //*** ADD ***//
+        displayMap();
+      });
 
       function displayMap() {
-      var portal = new Portal();
+        var portal = new Portal();
 
-      // Once the portal has loaded, the user is signed in
-      portal.load().then(function() {
-        dom.byId('viewDiv').style.display = 'flex';
+        // Once the portal has loaded, the user is signed in
+        portal.load().then(function () {
+          dom.byId('viewDiv').style.display = 'flex';
 
-        var map = new Map({
-          basemap: "topo"
+          var map = new Map({
+            basemap: "topo"
+          });
+
+          var view = new MapView({
+            container: "viewDiv",
+            map: map,
+            zoom: 14,
+            center: [-118.24, 34.05]
+          });
+
+          var traffic = new MapImageLayer({
+            url: 'https://traffic.arcgis.com/arcgis/rest/services/World/Traffic/MapServer'
+          })
+          map.add(traffic);
         });
-
-        var view = new MapView({
-          container: "viewDiv",
-          map: map,
-          zoom: 14,
-          center: [-118.24,34.05]
-        });
-
-        var traffic = new MapImageLayer({
-          url: 'https://traffic.arcgis.com/arcgis/rest/services/World/Traffic/MapServer'
-        })
-        map.add(traffic);
-      });
-    }
+      }
 
     });
 
   </script>
 </head>
+
 <body>
   <div id="anonymousPanel" style="display: block; padding: 5px; text-align: center;">
     <span id="sign-in" class="action">Sign In</span> to see live traffic.
@@ -110,4 +113,5 @@
   <!-- for the map -->
   <div id="viewDiv" style="display: none;"></div>
 </body>
+
 </html>
