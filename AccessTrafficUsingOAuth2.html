@@ -39,7 +39,7 @@
       "dojo/on",
       "dojo/dom"
     ], function (
-      Portal, OAuthInfo, identityManager, PortalQueryParams, Map, MapView, MapImageLayer,
+      Portal, OAuthInfo, esriId, PortalQueryParams, Map, MapView, MapImageLayer,
       domStyle, domAttr, on, dom) {
 
       // ArcGIS Online or your portal address
@@ -87,20 +87,20 @@
         portal.queryItems(queryParams).then(createGallery);
       });
 
-      // identityManager.registerOAuthInfos([info]);
+      // esriId.registerOAuthInfos([info]);
 
       // // send users to arcgis.com to login
       // on(dom.byId("sign-in"), "click", function () {
-      //   identityManager.getCredential(portalUrl);
+      //   esriId.getCredential(portalUrl);
       // });
 
       // // log out and reload
       // on(dom.byId("sign-out"), "click", function () {
-      //   identityManager.destroyCredentials();
+      //   esriId.destroyCredentials();
       //   window.location.reload();
       // });
 
-      // identityManager.checkSignInStatus(portalUrl).then(function () {
+      // esriId.checkSignInStatus(portalUrl).then(function () {
       //   dom.byId('anonymousPanel').style.display = 'none';
       //   dom.byId('personalizedPanel').style.display = 'block'
       //   //*** ADD ***//
